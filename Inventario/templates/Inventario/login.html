@@ -1,0 +1,20 @@
+{% extends 'Inventario/base.html' %}
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-6">
+        <div class="card border-primary mb-3">
+            <div class="card-header">
+                <h4 style="text-align: center;"><i class="fa-solid fa-user-secret fa-lg"></i>Inicio De Sesion</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary" id="submit"><a href="{% url 'register' %}"> Registrate</a></button>
+                    <button type="submit" class="btn btn-primary" id="submit"> Iniciar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

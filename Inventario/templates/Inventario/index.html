@@ -1,0 +1,104 @@
+{% extends "Inventario/base.html" %}
+{% block body %}
+{% if libro %}
+<div class="card border-primary ms-4 me-4 mb-4">
+  <div class="card-header"><h2>Libro</h2></div>
+  <div class="card-body">
+      <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">N°</th>
+              <th scope="col">codigo</th>
+              <th scope="col">nombre_libro</th>
+              <th scope="col">nombre_autor</th>
+              <th scope="col">categoria</th>
+              <th scope="col">Precio</th>
+              <th scope="col">accion</th>
+            </tr>
+          </thead>
+          <tbody>
+              {% for libros in libro %}
+              {% if libros.estado == 'A' %}
+              <tr>
+                  <td>{{libros.id}}</td>
+                  <td>{{libros.codigo}}</td>
+                  <td>{{libros.nombre_libro}}</td>
+                  <td>{{libros.nombre_autor}}</td>
+                  <td>{{libros.categoria}}</td>
+                  <td>{{libros.Precio|floatformat:2}}</td>
+                  <td> 
+                    <button type="button" class="btn btn-success me-1" href="{% url 'view_libro' libros.id %}"data-bs-toggle="modal"
+                    data-bs-target="#myModal{{libros.id}}">
+                      <i class="fa-solid fa-circle-info fa-lg"></i>
+                    </button>
+                    <!-- modal -->
+                    <div class="modal" id="myModal{{libros.id}}"tabindex="-1"aria-labelledby="myModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title">Libro</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerca">
+                              <span aria-hidden="true"></span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                           <ul class="list-unstyled">
+                            <li>Nombre_libro: <strong>{{libros.nombre_libro}}</strong></li>
+                            <li>Nombre_autor: <strong>{{libros.nombre_autor}}</strong></li>
+                            <li>Categoria: <strong>{{libros.categoria}}</strong></li>
+                            <li>Precio: <strong>${{libros.Precio}}</strong></li>
+                            <li>Codigo: <strong>{{libros.codigo}}</strong></li>
+                           </ul>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-primary">Datos</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <a class= "btn btn-warning me-1" href="{% url 'edit' libros.id %}">
+                      <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                    </a>
+                    <button type="button" class="btn btn-danger me-1" data-bs-toggle="modal"
+                    data-bs-target="#eli{{libros.id}}"><i class="fa-solid fa-trash fa-lg"></i>
+                    </button>
+                    <!-- modal elimina -->
+                    <div class="modal" id="eli{{libros.id}}"tabindex="-1"aria-labelledby="myModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title">Eliminar Libro</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerca">
+                              <span aria-hidden="true"></span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <p>Esta por eliminar este Libro</p>
+                          </div>
+                          <div class="modal-footer">
+                            <form action="{% url 'eliminar' libros.id %}" method="post">
+                              {% csrf_token %}
+                              <input type="submit" class="btn btn-primary" value="Elimina">
+                            </form>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+              </tr>
+              {% endif %}
+              {% endfor %}
+          </tbody>
+      </table>
+  </div>
+</div>
+{% else %}
+<div class="alert alert-dismissible alert-danger">
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <h4 class="alert-heading">advertencia!</h4>
+  <p class="mb-0">No hay regisros</p>
+</div>
+{% endif %}
+{% endblock %}
